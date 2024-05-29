@@ -27,7 +27,7 @@ public class DoctorSchedule {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctors;
+    private Doctor doctor;
 
     @OneToOne(mappedBy = "doctorSchedule")
     private Appointment appointment;
