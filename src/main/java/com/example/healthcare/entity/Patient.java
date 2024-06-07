@@ -38,6 +38,9 @@ public class Patient {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "maritial_status")
+    private String maritialStatus;
+
     @ManyToMany(mappedBy = "patients")
     private Set<Appointment> appointments;
 }

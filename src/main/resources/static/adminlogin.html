@@ -16,14 +16,51 @@
                     <div id="output"></div>
                     <div class="avatar"></div>
                     <div class="form-box">
-                        <form class="form" role="form" method="POST" accept-charset="UTF-8">
-                            <input name="doctorId" type="text" placeholder="Doctor ID" required>
+                        <form id="login-form" class="form" role="form" method="POST" accept-charset="UTF-8">
+                            <input name="username" type="text" placeholder="Doctor ID" required>
                             <input name="password" type="password" placeholder="Password" required>
                             <button class="btn btn-info btn-block login" type="submit" name="login">Login</button>
                         </form>
                     </div>
                 </div>
             <!-- end -->
+
+            <script>
+                document.getElementById('login-form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(event.target);
+                    const data = {
+                        username: formData.get('username'),
+                        password: formData.get('password'),
+                    };
+
+                    fetch('http://localhost:8080/doctor/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Success:', data);
+                            alert('Signed in successfully!');
+                            sessionStorage.setItem('doctorId', data.id); // Store the patient ID in session storage
+                            // Redirect to patient2.html
+                            window.location.href = "doctor/doctordashboard.html";
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('There was a problem with your login. Please try again.');
+                        });
+                });
+            </script>
         </div>
 
         <script src="assets/js/jquery.js"></script>

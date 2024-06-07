@@ -1,55 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability</title>
     <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet"> -->
-    
 </head>
 <body>
-     <?php 
+<div id="alert" class="alert alert-danger" role="alert" style="display: none;">
+    Doctor is not available at the moment. Please try again later.
+</div>
+<table class="table table-hover" id="scheduleTable" style="display: none;">
+    <thead>
+    <tr>
+        <th>Day</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Availability</th>
+    </tr>
+    </thead>
+    <tbody id="scheduleBody">
+    </tbody>
+</table>
 
-        if (mysqli_num_rows($res)==0) {
+<script>
+    $(document).ready(function() {
+        const dateInput = sessionStorage.getItem('date');
+        if (dateInput) {
+            fetchSchedule(dateInput);
+        }
+    });
 
-            echo "<div class='alert alert-danger' role='alert'>Doctor is not available at the moment. Please try again later.</div>";
-                
-            } else {
-             echo "   <table class='table table-hover'>";
-        echo " <thead>";
-            echo " <tr>";
-                echo " <th>Day</th>";
-                echo " <th>Date</th>";
-               echo "  <th>Start</th>";
-               echo "  <th>End</th>";
-                echo " <th>Availability</th>";
-            echo " </tr>";
-       echo "  </thead>";
-       echo "  <tbody>";
+    function fetchSchedule(dateInput) {
+        $.ajax({
+            url: `http://localhost:8080/appointment/schedule`,
+            type: 'GET',
+            data: { dateInput: dateInput },
+            success: function(schedule) {
+                const scheduleBody = $('#scheduleBody');
+                const alert = $('#alert');
+                const table = $('#scheduleTable');
 
-         while($row = mysqli_fetch_array($res)) { 
+                // Clear existing rows
+                scheduleBody.empty();
 
-            ?>
-
-            <tr>
-                <?php
-
-                // $avail=null;
-                if ($row['bookAvail']!='available') {
-                $avail="danger";
+                if (schedule.length === 0) {
+                    alert.show();
+                    table.hide();
                 } else {
-                $avail="primary";
-                
+                    alert.hide();
+                    table.show();
+
+                    schedule.forEach(item => {
+                        const availText = item.isAvailable ? 'Available' : 'Not Available';
+                        const availClass = item.isAvailable !== 'available' ? 'primary' : 'danger';
+                        const row = `
+                                <tr>
+                                    <td>${item.scheduleDay}</td>
+                                    <td>${item.startTime}</td>
+                                    <td>${item.endTime}</td>
+                                    <td><span class="label label-${availClass}">${availText}</span></td>
+                                </tr>
+                            `;
+                        scheduleBody.append(row);
+                    });
+                }
+            },
+            error: function(error) {
+                console.error('Error fetching schedule:', error);
             }
-                echo "<td>" . $row['scheduleDay'] . "</td>";
-                echo "<td>" . $row['scheduleDate'] . "</td>";
-                echo "<td>" . $row['startTime'] . "</td>";
-                echo "<td>" . $row['endTime'] . "</td>";
-                echo "<td> <span class='label label-".$avail."'>". $row['bookAvail'] ."</span></td>";
-                ?>
-            </tr>
-        <?php
+        });
     }
-}
-    ?>
-        </tbody>
-    </body>
+</script>
+</body>
 </html>

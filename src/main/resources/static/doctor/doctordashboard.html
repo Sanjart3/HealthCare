@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Welcome Dr <?php echo $userRow['doctorFirstName'];?> <?php echo $userRow['doctorLastName'];?></title>
-        <!-- Bootstrap Core CSS -->
-        <!-- <link href="assets/css/bootstrap.css" rel="stylesheet"> -->
+        <title>Welcome Dr <span id="fullName"></span></title>
+
+
         <link href="assets/css/material.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="assets/css/sb-admin.css" rel="stylesheet">
@@ -29,22 +29,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="doctordashboard.php">Welcome Dr <?php echo $userRow['doctorFirstName'];?> <?php echo $userRow['doctorLastName'];?></a>
+                    <a class="navbar-brand" href="doctordashboard.html">Welcome Dr <span id="fullName2"></span></a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     
                     
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userRow['doctorFirstName']; ?> <?php echo $userRow['doctorLastName']; ?><b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span id="fullName"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="doctorprofile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                <a href="doctorprofile.html"><i class="fa fa-fw fa-user"></i> Profile</a>
                             </li>
                            
                             <li class="divider"></li>
                             <li>
-                                <a href="logout.php?logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                <a href="../index.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -53,13 +53,13 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
                         <li class="active">
-                            <a href="doctordashboard.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                            <a href="doctordashboard.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="addschedule.php"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
+                            <a href="addschedule.html"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
                         </li>
                         <li>
-                            <a href="patientlist.php"><i class="fa fa-fw fa-edit"></i> Patient List</a>
+                            <a href="patientlist.html"><i class="fa fa-fw fa-edit"></i> Patient List</a>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +99,6 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr class="filters">
-                                    <th><input type="text" class="form-control" placeholder="patient Ic" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Name" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Contact No." disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Email" disabled></th>
@@ -112,67 +111,61 @@
                                     <th><input type="text" class="form-control" placeholder="Delete" disabled></th>
                                 </tr>
                             </thead>
-                            
-                            <?php 
-                            $res=mysqli_query($con,"SELECT a.*, b.*,c.*
-                                                    FROM patient a
-                                                    JOIN appointment b
-                                                    On a.icPatient = b.patientIc
-                                                    JOIN doctorschedule c
-                                                    On b.scheduleId=c.scheduleId
-                                                    WHERE c.doctorId=".$usersession."
-                                                    Order By appId desc");
-                                  if (!$res) {
-                                    printf("Error: %s\n", mysqli_error($con));
-                                    exit();
-                                }
-                            while ($appointment=mysqli_fetch_array($res)) {
-                                
-                                if ($appointment['status']=='process') {
-                                    $status="danger";
-                                    $icon='remove';
-                                    $checked='';
 
-                                } else {
-                                    $status="success";
-                                    $icon='ok';
-                                    $checked = 'disabled';
-                                }
+                            <tbody id="appointment-body">
+                            <!-- Data will be injected here by Thymeleaf -->
+                            </tbody>
+                        </table>
+                            <div class="panel panel-default">
+                                <div class="col-md-offset-3 pull-right">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </div>
+                        </div>
 
-                                
-                              
-                                
-                             
-                                
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script>
+                            $(document).ready(function() {
+                                const doctorId = sessionStorage.getItem("doctorId");
 
-                                
+                                $.ajax({
+                                    url: `http://localhost:8080/doctor/get-data?doctorId=${doctorId}`,
+                                    method: 'GET',
+                                    success: function(data) {
+                                        const tbody = $('#appointment-body');
+                                        data.forEach(appointment => {
+                                            const statusClass = appointment.status === 'process' ? 'danger' : 'success';
+                                            const icon = appointment.status === 'process' ? 'remove' : 'ok';
+                                            const checked = appointment.status !== 'process' ? 'disabled' : '';
 
-                                echo "<tbody>";
-                                echo "<tr class='$status'>";
-                                    echo "<td>" . $appointment['patientIc'] . "</td>";
-                                    echo "<td>" . $appointment['patientLastName'] . "</td>";
-                                    echo "<td>" . $appointment['patientPhone'] . "</td>";
-                                    echo "<td>" . $appointment['patientEmail'] . "</td>";
-                                    echo "<td>" . $appointment['scheduleDay'] . "</td>";
-                                    echo "<td>" . $appointment['scheduleDate'] . "</td>";
-                                    echo "<td>" . $appointment['startTime'] . "</td>";
-                                    echo "<td>" . $appointment['endTime'] . "</td>";
-                                    echo "<td><span class='glyphicon glyphicon-".$icon."' aria-hidden='true'></span>".' '."". $appointment['status'] . "</td>";
-                                    echo "<form method='POST'>";
-                                    echo "<td class='text-center'><input type='checkbox' name='enable' id='enable' value='".$appointment['appId']."' onclick='chkit(".$appointment['appId'].",this.checked);' ".$checked."></td>";
-                                    echo "<td class='text-center'><a href='#' id='".$appointment['appId']."' class='delete'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a>
-                            </td>";
-                               
-                            } 
-                                echo "</tr>";
-                           echo "</tbody>";
-                       echo "</table>";
-                       echo "<div class='panel panel-default'>";
-                       echo "<div class='col-md-offset-3 pull-right'>";
-                       echo "<button class='btn btn-primary' type='submit' value='Submit' name='submit'>Update</button>";
-                        echo "</div>";
-                        echo "</div>";
-                        ?>
+                                            const row = `
+                        <tr class="${statusClass}">
+                            <td>${appointment.patientLastName}</td>
+                            <td>${appointment.patientPhone}</td>
+                            <td>${appointment.patientEmail}</td>
+                            <td>${appointment.scheduleDay}</td>
+                            <td>${appointment.scheduleDate}</td>
+                            <td>${appointment.startTime}</td>
+                            <td>${appointment.endTime}</td>
+                            <td><span class="glyphicon glyphicon-${icon}" aria-hidden="true"></span> ${appointment.status}</td>
+                            <td class="text-center"><input type="checkbox" name="enable" value="${appointment.appId}" onclick="chkit(${appointment.appId}, this.checked);" ${checked}></td>
+                            <td class="text-center"><a href="#" id="${appointment.appId}" class="delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+                        </tr>
+                    `;
+                                            tbody.append(row);
+                                        });
+                                    },
+                                    error: function(err) {
+                                        console.error('Error fetching data:', err);
+                                    }
+                                });
+                            });
+
+                            function chkit(appId, isChecked) {
+                                // Implement your checkbox change logic here
+                            }
+                        </script>
+
                     </div>
                 </div>
                     <!-- panel end -->
@@ -280,3 +273,30 @@ return false;
 
     </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        const id = getPatientIdFromSession();
+
+        console.log(id, 'id')
+        if (id) {
+            $.ajax({
+                url: `http://localhost:8080/doctor/getDoctor/${id}`,
+                type: 'GET',
+                success: function(doctor) {
+                    document.getElementById('fullName').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('fullName2').innerText = doctor.firstName + " " + doctor.lastName;
+                },
+                error: function(err) {
+                    console.error('Error fetching patient data:', err);
+                }
+            });
+        } else {
+            document.getElementById('user-first-name').innerText = "Error happened";
+        }
+    });
+
+    function getPatientIdFromSession() {
+        return sessionStorage.getItem('doctorId');
+    }
+</script>

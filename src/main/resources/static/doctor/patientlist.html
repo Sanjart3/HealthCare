@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Welcome Dr <?php echo $userRow['doctorFirstName'];?> <?php echo $userRow['doctorLastName'];?></title>
+        <title>Welcome Dr</title>
         <!-- Bootstrap Core CSS -->
         <!-- <link href="assets/css/bootstrap.css" rel="stylesheet"> -->
         <link href="assets/css/material.css" rel="stylesheet">
@@ -31,14 +31,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="doctordashboard.php">Welcome Dr <?php echo $userRow['doctorFirstName'];?> <?php echo $userRow['doctorLastName'];?></a>
+                    <a class="navbar-brand" href="doctordashboard.html">Welcome Dr <span id="fullName"></span></a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     
                     
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userRow['doctorFirstName']; ?> <?php echo $userRow['doctorLastName']; ?><b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user">  <span id="fullName2"></span>  <b class="caret"></b> </i> </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -51,7 +51,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="logout.php?logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                <a href="../index.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -60,13 +60,13 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
                          <li>
-                            <a href="doctordashboard.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                            <a href="doctordashboard.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="addschedule.php"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
+                            <a href="addschedule.html"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
                         </li>
                         <li class="active">
-                            <a href="patientlist.php"><i class="fa fa-fw fa-edit"></i> Patient List</a>
+                            <a href="patientlist.html"><i class="fa fa-fw fa-edit"></i> Patient List</a>
                         </li>
                     </ul>
                 </div>
@@ -107,55 +107,62 @@
                         <div class="panel-body">
                         <!-- panel content start -->
                            <!-- Table -->
-                        <table class="table table-hover table-bordered">
-                            <thead>
+                            <table id="patientTable" class="table table-hover table-bordered">
+                                <thead>
                                 <tr class="filters">
-                                    <th><input type="text" class="form-control" placeholder="patient Ic" disabled></th>
-                                    <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                                    <th><input type="text" class="form-control" placeholder="Password" disabled></th>
-                                    <th><input type="text" class="form-control" placeholder="ContactNo." disabled></th>
-                                    <!-- <th><input type="text" class="form-control" placeholder="Email" disabled></th> -->
+                                    <th><input type="text" class="form-control" placeholder="First Name" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Last Name" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Gender" disabled></th>
-                                    <th><input type="text" class="form-control" placeholder="Status" disabled></th>
-                                    <th><input type="text" class="form-control" placeholder="Birthdate" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Marital Status" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="DOB" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                    <th>Action</th>
                                 </tr>
-                            </thead>
-                            
-                            <?php 
-                            $result=mysqli_query($con,"SELECT * FROM patient");
-                            
+                                </thead>
+                                <tbody id="patientBody"></tbody>
+                            </table>
+                            <div class="panel panel-default">
+                                <div class="col-md-offset-3 pull-right">
+                                    <button id="updateButton" class="btn btn-primary">Update</button>
+                                </div>
+                            </div>
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                            fetchPatients();
 
-                                  
-                            while ($patientRow=mysqli_fetch_array($result)) {
-                                
-                              
-                                echo "<tbody>";
-                                echo "<tr>";
-                                    echo "<td>" . $patientRow['icPatient'] . "</td>";
-                                    echo "<td>" . $patientRow['patientLastName'] . "</td>";
-                                    echo "<td>" . $patientRow['password'] . "</td>";
-                                    echo "<td>" . $patientRow['patientPhone'] . "</td>";
-                                    // echo "<td>" . $patientRow['patientEmail'] . "</td>";
-                                    echo "<td>" . $patientRow['patientGender'] . "</td>";
-                                    echo "<td>" . $patientRow['patientMaritialStatus'] . "</td>";
-                                    echo "<td>" . $patientRow['patientDOB'] . "</td>";
-                                    echo "<td>" . $patientRow['patientAddress'] . "</td>";
-                                    echo "<form method='POST'>";
-                                    echo "<td class='text-center'><a href='#' id='".$patientRow['icPatient']."' class='delete'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a>
-                            </td>";
-                               
-                            } 
-                                echo "</tr>";
-                           echo "</tbody>";
-                       echo "</table>";
-                       echo "<div class='panel panel-default'>";
-                       echo "<div class='col-md-offset-3 pull-right'>";
-                       echo "<button class='btn btn-primary' type='submit' value='Submit' name='submit'>Update</button>";
-                        echo "</div>";
-                        echo "</div>";
-                        ?>
-                        <!-- panel content end -->
+                            document.getElementById('updateButton').addEventListener('click', function() {
+                            // Implement update functionality here
+                            alert('Update button clicked!');
+                            });
+                            });
+
+                            function fetchPatients() {
+                                fetch(`http://localhost:8080/doctor/patients`)
+                                .then(response => response.json())
+                                .then(patients => {
+                                    const patientBody = document.getElementById('patientBody');
+                                    patients.forEach(patient => {
+                                        const row = document.createElement('tr');
+                                        row.innerHTML = `
+                                        <td>${patient.firstName}</td>
+                                        <td>${patient.lastName}</td>
+                                        <td>${patient.phone}</td>
+                                        <td>${patient.gender}</td>
+                                        <td>${patient.maritialStatus}</td>
+                                        <td>${patient.dateOfBirth}</td>
+                                        <td>${patient.address}</td>
+                                        <td class="text-center">
+                                            <a href="#" id="${patient.icPatient}" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                        `;
+                                        patientBody.appendChild(row);
+                                        });
+                                    })
+                                .catch(error => console.error('Error fetching patients:', error));
+                            }
+                            </script>
+                            <!-- panel content end -->
                         <!-- panel end -->
                         </div>
                     </div>
@@ -163,6 +170,7 @@
 
                 </div>
             </div>
+        </div>
         <!-- /#wrapper -->
 
 
@@ -246,3 +254,30 @@ return false;
         <!-- Include Date Range Picker -->
     </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        const id = getPatientIdFromSession();
+
+        console.log(id, 'id')
+        if (id) {
+            $.ajax({
+                url: `http://localhost:8080/doctor/getDoctor/${id}`,
+                type: 'GET',
+                success: function(doctor) {
+                    document.getElementById('fullName').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('fullName2').innerText = doctor.firstName + " " + doctor.lastName;
+                },
+                error: function(err) {
+                    console.error('Error fetching patient data:', err);
+                }
+            });
+        } else {
+            document.getElementById('user-first-name').innerText = "Error happened";
+        }
+    });
+
+    function getPatientIdFromSession() {
+        return sessionStorage.getItem('doctorId');
+    }
+</script>

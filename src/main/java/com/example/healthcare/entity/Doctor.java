@@ -11,7 +11,7 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_doctor")
-    private Long idDoctor;
+    private Long id;
 
     @Column(name = "password")
     private String password;

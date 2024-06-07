@@ -31,22 +31,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="doctordashboard.php">Welcome Dr <?php echo $userRow['doctorFirstName'];?> <?php echo $userRow['doctorLastName'];?></a>
+                    <a class="navbar-brand" href="doctordashboard.html">Welcome Dr <span id = "fullName"></span></a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     
                     
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userRow['doctorFirstName']; ?> <?php echo $userRow['doctorLastName']; ?><b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span id="fullName2"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="doctorprofile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                <a href="doctorprofile.html"><i class="fa fa-fw fa-user"></i> Profile</a>
                             </li>
                            
                             <li class="divider"></li>
                             <li>
-                                <a href="logout.php?logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                <a href="../index.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -55,13 +55,13 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
                          <li>
-                            <a href="doctordashboard.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                            <a href="doctordashboard.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="addschedule.php"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
+                            <a href="addschedule.html"><i class="fa fa-fw fa-table"></i> Doctor Schedule</a>
                         </li>
                         <li>
-                            <a href="patientlist.php"><i class="fa fa-fw fa-edit"></i> Patient List</a>
+                            <a href="patientlist.html"><i class="fa fa-fw fa-edit"></i> Patient List</a>
                         </li>
                     </ul>
                 </div>
@@ -108,7 +108,7 @@
                             
                             <div class="user-wrapper">
                                 <div class="description">
-                                    <h4><?php echo $userRow['doctorFirstName']; ?> <?php echo $userRow['doctorLastName']; ?></h4>
+                                    <h4><span id="fullName3"></span></h4>
                                     <h5> <strong> Doctor </strong></h5>
                                     
                                     <hr />
@@ -119,7 +119,7 @@
                         
                         <div class="col-md-9 col-sm-9  user-wrapper">
                             <div class="description">
-                                <h3> <?php echo $userRow['doctorFirstName']; ?> <?php echo $userRow['doctorLastName']; ?> </h3>
+                                <h3> <span id="fullName4"></span> </h3>
                                 <hr />
                                 
                                 <div class="panel panel-default">
@@ -132,39 +132,30 @@
                                                 
                                                 <tr>
                                                     <td>Doctor ID</td>
-                                                    <td><?php echo $userRow['doctorId']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>IC Number</td>
-                                                    <td><?php echo $userRow['icDoctor']; ?></td>
+                                                    <td><span id="doctorId"></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Address</td>
-                                                    <td><?php echo $userRow['doctorAddress']; ?></td>
+                                                    <td><span id="address"></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Contact Number</td>
-                                                    <td><?php echo $userRow['doctorPhone']; ?>
+                                                    <td><span id="number"></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Email</td>
-                                                    <td><?php echo $userRow['doctorEmail']; ?>
+                                                    <td><span id="email"></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Birthdate</td>
-                                                    <td><?php echo $userRow['doctorDOB']; ?>
+                                                    <td> <span id="birthDate"></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Booking price</td>
-                                                    <td><?php echo $userRow['booking_price']; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Balance</td>
-                                                    <td><?php echo $userRow['balance']; ?>
+                                                    <td><span id="price"></span>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -191,49 +182,135 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- form start -->
-                                        <form action="<?php $_PHP_SELF ?>" method="post" >
+                                        <form id="update-form">
                                             <table class="table table-user-information">
                                                 <tbody>
-                                                    <tr>
-                                                        <td>IC Number:</td>
-                                                        <td><?php echo $userRow['icDoctor']; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>First Name:</td>
-                                                        <td><input type="text" class="form-control" name="doctorFirstName" value="<?php echo $userRow['doctorFirstName']; ?>"  /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Last Name</td>
-                                                        <td><input type="text" class="form-control" name="doctorLastName" value="<?php echo $userRow['doctorLastName']; ?>"  /></td>
-                                                    </tr>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    <tr>
-                                                        <td>Phone number</td>
-                                                        <td><input type="text" class="form-control" name="doctorPhone" value="<?php echo $userRow['doctorPhone']; ?>"  /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Email</td>
-                                                        <td><input type="text" class="form-control" name="doctorEmail" value="<?php echo $userRow['doctorEmail']; ?>"  /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Address</td>
-                                                        <td><textarea class="form-control" name="doctorAddress"  ><?php echo $userRow['doctorAddress']; ?></textarea></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="submit" name="submit" class="btn btn-info" value="Update Info"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                    
-                                                </table>
-                                                
-                                                
-                                                
-                                            </form>
+                                                <tr>
+                                                    <td>First Name:</td>
+                                                    <td><input type="text" class="form-control" id="firstName" name="doctorFirstName"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Last Name</td>
+                                                    <td><input type="text" class="form-control" id="lastName" name="doctorLastName" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone number</td>
+                                                    <td><input type="text" class="form-control" id="doctorPhone" name="doctorPhone"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td><input type="text" class="form-control" id="doctorEmail" name="doctorEmail"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address</td>
+                                                    <td><textarea class="form-control" id="doctorAddress" name="doctorAddress"></textarea></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>DOB</td>
+                                                    <!-- <td><input type="text" class="form-control" name="patientDOB" value="<?php echo $userRow['patientDOB']; ?>"  /></td> -->
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-xs-4 col-md-4">
+                                                                <select name="month" class="form-control input-lg" >
+                                                                    <option value="">Month</option>
+                                                                    <option value="01">Jan</option>
+                                                                    <option value="02">Feb</option>
+                                                                    <option value="03">Mar</option>
+                                                                    <option value="04">Apr</option>
+                                                                    <option value="05">May</option>
+                                                                    <option value="06">Jun</option>
+                                                                    <option value="07">Jul</option>
+                                                                    <option value="08">Aug</option>
+                                                                    <option value="09">Sep</option>
+                                                                    <option value="10">Oct</option>
+                                                                    <option value="11">Nov</option>
+                                                                    <option value="12">Dec</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-xs-4 col-md-4">
+                                                                <select name="day" class="form-control input-lg" >
+                                                                    <option value="">Day</option>
+                                                                    <option value="01">1</option>
+                                                                    <option value="02">2</option>
+                                                                    <option value="03">3</option>
+                                                                    <option value="04">4</option>
+                                                                    <option value="05">5</option>
+                                                                    <option value="06">6</option>
+                                                                    <option value="07">7</option>
+                                                                    <option value="08">8</option>
+                                                                    <option value="09">9</option>
+                                                                    <option value="10">10</option>
+                                                                    <option value="11">11</option>
+                                                                    <option value="12">12</option>
+                                                                    <option value="13">13</option>
+                                                                    <option value="14">14</option>
+                                                                    <option value="15">15</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="17">17</option>
+                                                                    <option value="18">18</option>
+                                                                    <option value="19">19</option>
+                                                                    <option value="20">20</option>
+                                                                    <option value="21">21</option>
+                                                                    <option value="22">22</option>
+                                                                    <option value="23">23</option>
+                                                                    <option value="24">24</option>
+                                                                    <option value="25">25</option>
+                                                                    <option value="26">26</option>
+                                                                    <option value="27">27</option>
+                                                                    <option value="28">28</option>
+                                                                    <option value="29">29</option>
+                                                                    <option value="30">30</option>
+                                                                    <option value="31">31</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-xs-4 col-md-4">
+                                                                <select name="year" class="form-control input-lg" >
+                                                                    <option value="">Year</option>
+
+                                                                    <option value="1981">1981</option>
+                                                                    <option value="1982">1982</option>
+                                                                    <option value="1983">1983</option>
+                                                                    <option value="1984">1984</option>
+                                                                    <option value="1985">1985</option>
+                                                                    <option value="1986">1986</option>
+                                                                    <option value="1987">1987</option>
+                                                                    <option value="1988">1988</option>
+                                                                    <option value="1989">1989</option>
+                                                                    <option value="1990">1990</option>
+                                                                    <option value="1991">1991</option>
+                                                                    <option value="1992">1992</option>
+                                                                    <option value="1993">1993</option>
+                                                                    <option value="1994">1994</option>
+                                                                    <option value="1995">1995</option>
+                                                                    <option value="1996">1996</option>
+                                                                    <option value="1997">1997</option>
+                                                                    <option value="1998">1998</option>
+                                                                    <option value="1999">1999</option>
+                                                                    <option value="2000">2000</option>
+                                                                    <option value="2001">2001</option>
+                                                                    <option value="2002">2002</option>
+                                                                    <option value="2003">2003</option>
+                                                                    <option value="2004">2004</option>
+                                                                    <option value="2005">2005</option>
+                                                                    <option value="2006">2006</option>
+                                                                    <option value="2007">2007</option>
+                                                                    <option value="2008">2008</option>
+                                                                    <option value="2009">2009</option>
+                                                                    <option value="2010">2010</option>
+                                                                    <option value="2011">2011</option>
+                                                                    <option value="2012">2012</option>
+                                                                    <option value="2013">2013</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="submit" name="submit" class="btn btn-info" value="Update Info"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
                                             <!-- form end -->
                                         </div>
                                         
@@ -246,7 +323,8 @@
                     </div>
                         <!-- panel content end -->
                         <!-- panel end -->
-                        </div>
+            </section>
+                          </div>
                     </div>
                     <!-- panel start -->
 
@@ -265,5 +343,97 @@
         <!-- Latest compiled and minified JavaScript -->
          <!-- script for jquery datatable start-->
         <!-- Include Date Range Picker -->
+            </div>
+            </div>
     </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        const id = getPatientIdFromSession();
+
+        console.log(id, 'id')
+        if (id) {
+            $.ajax({
+                url: `http://localhost:8080/doctor/getDoctor/${id}`,
+                type: 'GET',
+                success: function(doctor) {
+                    document.getElementById('fullName').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('fullName2').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('fullName3').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('fullName4').innerText = doctor.firstName + " " + doctor.lastName;
+                    document.getElementById('doctorId').innerText = doctor.id;
+                    document.getElementById('address').innerText = doctor.address;
+                    document.getElementById('number').innerText = doctor.phone;
+                    document.getElementById('email').innerText = doctor.email;
+                    document.getElementById('birthDate').innerText = doctor.dateOfBirth;
+                    document.getElementById('price').innerText = doctor.bookingPrice;
+
+
+                    document.getElementById('firstName').value = doctor.firstName;
+                    document.getElementById('lastName').value = doctor.lastName;
+                    document.getElementById('doctorPhone').value = doctor.phone;
+                    document.getElementById('doctorEmail').value = doctor.email;
+                    document.getElementById('doctorAddress').value = doctor.address;
+                },
+                error: function(err) {
+                    console.error('Error fetching patient data:', err);
+                }
+            });
+        } else {
+            document.getElementById('user-first-name').innerText = "Error happened";
+        }
+    });
+
+    function getPatientIdFromSession() {
+        return sessionStorage.getItem('doctorId');
+    }
+</script>
+
+<script>
+    document.getElementById('update-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const data = {
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName'),
+            email: formData.get('doctorEmail'),
+            phone: formData.get('doctorPhone'),
+            address: formData.get('doctorAddress'),
+            dateOfBirth: `${formData.get('year')}-${formData.get('month')}-${formData.get('day')}`
+        };
+
+        function getPatientIdFromSession() {
+            return sessionStorage.getItem('doctorId');
+        }
+        const id = getPatientIdFromSession();
+        if (!id) {
+            alert('Patient ID not found in session. Please log in again.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/doctor/${id}/update-profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert('Account updated successfully!');
+                window.location.href = "patient/patient2.html";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was a problem with updating. Please try again.');
+            });
+    });
+</script>

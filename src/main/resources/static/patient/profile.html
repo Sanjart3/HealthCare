@@ -4,20 +4,20 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
 		<title>Patient Dashboard</title>
-		<!-- Bootstrap -->
+
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 		<link href="assets/css/default/style.css" rel="stylesheet">
-		<!-- <link href="assets/css/default/style1.css" rel="stylesheet"> -->
+
 		<link href="assets/css/default/blocks.css" rel="stylesheet">
 		<link href="assets/css/date/bootstrap-datepicker.css" rel="stylesheet">
 		<link href="assets/css/date/bootstrap-datepicker3.css" rel="stylesheet">
-		<!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+
 		<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-		<!--Font Awesome (added because you use icons in your prepend/append)-->
+
 		<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
-		<!-- <link href="assets/css/material.css" rel="stylesheet"> -->
+
 	</head>
 	<body>
 		
@@ -32,31 +32,30 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="patient.php"></a>
+					<a class="navbar-brand" href="patient2.html"></a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<ul class="nav navbar-nav">
-							<li><a href="patient.php">Home</a></li>
-							<!-- <li><a href="profile.php?patientId=<?php echo $userRow['icPatient']; ?>" >Profile</a></li> -->
-							<li><a href="patientapplist.php?patientId=<?php echo $userRow['icPatient']; ?>">Appointment</a></li>
+							<li><a href="patient2.html">Home</a></li>
+							<li><a href="patientapplist.html">Appointment</a></li>
 						</ul>
 					</ul>
 					
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userRow['patientFirstName']; ?> <?php echo $userRow['patientLastName']; ?><b class="caret"></b></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><span id="userFirstName"></span><b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="profile.php?patientId=<?php echo $userRow['icPatient']; ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
+									<a href="profile.html"><i class="fa fa-fw fa-user"></i> Profile</a>
 								</li>
 								<li>
-									<a href="patientapplist.php?patientId=<?php echo $userRow['icPatient']; ?>"><i class="glyphicon glyphicon-file"></i> Appointment</a>
+									<a href="patientapplist.html"><i class="glyphicon glyphicon-file"></i> Appointment</a>
 								</li>
 								<li class="divider"></li>
 								<li>
-									<a href="patientlogout.php?logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+									<a href="../index.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
 								</li>
 							</ul>
 						</li>
@@ -76,7 +75,7 @@
 							
 							<div class="user-wrapper">
 								<div class="description">
-									<h4><?php echo $userRow['patientFirstName']; ?> <?php echo $userRow['patientLastName']; ?></h4>
+									<h4></h4>
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Update Profile</button>
 								</div>
 							</div>
@@ -84,7 +83,7 @@
 						
 						<div class="col-md-9 col-sm-9  user-wrapper">
 							<div class="description">
-								<h3> <?php echo $userRow['patientFirstName']; ?> <?php echo $userRow['patientLastName']; ?> </h3>
+								<h3> <span id="userFullName"></span> </h3>
 								<hr />
 								
 								<div class="panel panel-default">
@@ -97,36 +96,31 @@
 												
 												<tr>
 													<td>PatientMaritialStatus</td>
-													<td><?php echo $userRow['patientMaritialStatus']; ?></td>
+													<td><span id="patientMaritialStatus"></span></td>
 												</tr>
 												<tr>
 													<td>PatientDOB</td>
-													<td><?php echo $userRow['patientDOB']; ?></td>
+													<td><span id="dob"></span></td>
 												</tr>
 												<tr>
 													<td>PatientGender</td>
-													<td><?php echo $userRow['patientGender']; ?></td>
+													<td><span id="gender"></span></td>
 												</tr>
 												<tr>
 													<td>PatientAddress</td>
-													<td><?php echo $userRow['patientAddress']; ?>
+													<td><span id="patientAddress"></span>
 													</td>
 												</tr>
 												<tr>
 													<td>PatientPhone</td>
-													<td><?php echo $userRow['patientPhone']; ?>
+													<td><span id="patientPhone"></span>
 													</td>
 												</tr>
 												<tr>
 													<td>PatientEmail</td>
-													<td><?php echo $userRow['patientEmail']; ?>
+													<td><span id="patientEmail"></span>
 													</td>
 												</tr>
-												<tr>
-                                                    <td>Balance</td>
-                                                    <td><?php echo $userRow['patient_balance']; ?>
-                                                    </td>
-                                                </tr>
 											</tbody>
 										</table>
 									</div>
@@ -152,20 +146,16 @@
 									</div>
 									<div class="modal-body">
 										<!-- form start -->
-										<form action="<?php $_PHP_SELF ?>" method="post" >
+										<form id="update-form">
 											<table class="table table-user-information">
 												<tbody>
 													<tr>
-														<td>IC Number:</td>
-														<td><?php echo $userRow['icPatient']; ?></td>
-													</tr>
-													<tr>
 														<td>First Name:</td>
-														<td><input type="text" class="form-control" name="patientFirstName" value="<?php echo $userRow['patientFirstName']; ?>"  /></td>
+														<td><input type="text" class="form-control" name="patientFirstName"   /></td>
 													</tr>
 													<tr>
 														<td>Last Name</td>
-														<td><input type="text" class="form-control" name="patientLastName" value="<?php echo $userRow['patientLastName']; ?>"  /></td>
+														<td><input type="text" class="form-control" name="patientLastName"   /></td>
 													</tr>
 													
 													<!-- radio button -->
@@ -173,19 +163,19 @@
 														<td>Maritial Status:</td>
 														<td>
 															<div class="radio">
-																<label><input type="radio" name="patientMaritialStatus" value="single" <?php echo $single; ?>>Single</label>
+																<label><input type="radio" name="patientMaritialStatus" value="single">Single</label>
 															</div>
 															<div class="radio">
-																<label><input type="radio" name="patientMaritialStatus" value="married" <?php echo $married; ?>>Married</label>
+																<label><input type="radio" name="patientMaritialStatus" value="married">Married</label>
 															</div>
 															<div class="radio">
-																<label><input type="radio" name="patientMaritialStatus" value="separated" <?php echo $separated; ?>>Separated</label>
+																<label><input type="radio" name="patientMaritialStatus" value="separated">Separated</label>
 															</div>
 															<div class="radio">
-																<label><input type="radio" name="patientMaritialStatus" value="divorced" <?php echo $divorced; ?>>Divorced</label>
+																<label><input type="radio" name="patientMaritialStatus" value="divorced">Divorced</label>
 															</div>
 															<div class="radio">
-																<label><input type="radio" name="patientMaritialStatus" value="widowed" <?php echo $widowed; ?>>Widowed</label>
+																<label><input type="radio" name="patientMaritialStatus" value="widowed">Widowed</label>
 															</div>
 														</td>
 													</tr>
@@ -194,14 +184,98 @@
 														<td>DOB</td>
 														<!-- <td><input type="text" class="form-control" name="patientDOB" value="<?php echo $userRow['patientDOB']; ?>"  /></td> -->
 														<td>
-															<div class="form-group ">
-																
-																<div class="input-group">
-																	<div class="input-group-addon">
-																		<i class="fa fa-calendar">
-																		</i>
-																	</div>
-																	<input class="form-control" id="patientDOB" name="patientDOB" placeholder="MM/DD/YYYY" type="text" value="<?php echo $userRow['patientDOB']; ?>"/>
+															<div class="row">
+																<div class="col-xs-4 col-md-4">
+																	<select name="month" class="form-control input-lg" >
+																		<option value="">Month</option>
+																		<option value="01">Jan</option>
+																		<option value="02">Feb</option>
+																		<option value="03">Mar</option>
+																		<option value="04">Apr</option>
+																		<option value="05">May</option>
+																		<option value="06">Jun</option>
+																		<option value="07">Jul</option>
+																		<option value="08">Aug</option>
+																		<option value="09">Sep</option>
+																		<option value="10">Oct</option>
+																		<option value="11">Nov</option>
+																		<option value="12">Dec</option>
+																	</select>
+																</div>
+																<div class="col-xs-4 col-md-4">
+																	<select name="day" class="form-control input-lg" >
+																		<option value="">Day</option>
+																		<option value="01">1</option>
+																		<option value="02">2</option>
+																		<option value="03">3</option>
+																		<option value="04">4</option>
+																		<option value="05">5</option>
+																		<option value="06">6</option>
+																		<option value="07">7</option>
+																		<option value="08">8</option>
+																		<option value="09">9</option>
+																		<option value="10">10</option>
+																		<option value="11">11</option>
+																		<option value="12">12</option>
+																		<option value="13">13</option>
+																		<option value="14">14</option>
+																		<option value="15">15</option>
+																		<option value="16">16</option>
+																		<option value="17">17</option>
+																		<option value="18">18</option>
+																		<option value="19">19</option>
+																		<option value="20">20</option>
+																		<option value="21">21</option>
+																		<option value="22">22</option>
+																		<option value="23">23</option>
+																		<option value="24">24</option>
+																		<option value="25">25</option>
+																		<option value="26">26</option>
+																		<option value="27">27</option>
+																		<option value="28">28</option>
+																		<option value="29">29</option>
+																		<option value="30">30</option>
+																		<option value="31">31</option>
+																	</select>
+																</div>
+																<div class="col-xs-4 col-md-4">
+																	<select name="year" class="form-control input-lg" >
+																		<option value="">Year</option>
+
+																		<option value="1981">1981</option>
+																		<option value="1982">1982</option>
+																		<option value="1983">1983</option>
+																		<option value="1984">1984</option>
+																		<option value="1985">1985</option>
+																		<option value="1986">1986</option>
+																		<option value="1987">1987</option>
+																		<option value="1988">1988</option>
+																		<option value="1989">1989</option>
+																		<option value="1990">1990</option>
+																		<option value="1991">1991</option>
+																		<option value="1992">1992</option>
+																		<option value="1993">1993</option>
+																		<option value="1994">1994</option>
+																		<option value="1995">1995</option>
+																		<option value="1996">1996</option>
+																		<option value="1997">1997</option>
+																		<option value="1998">1998</option>
+																		<option value="1999">1999</option>
+																		<option value="2000">2000</option>
+																		<option value="2001">2001</option>
+																		<option value="2002">2002</option>
+																		<option value="2003">2003</option>
+																		<option value="2004">2004</option>
+																		<option value="2005">2005</option>
+																		<option value="2006">2006</option>
+																		<option value="2007">2007</option>
+																		<option value="2008">2008</option>
+																		<option value="2009">2009</option>
+																		<option value="2010">2010</option>
+																		<option value="2011">2011</option>
+																		<option value="2012">2012</option>
+																		<option value="2013">2013</option>
+																	</select>
 																</div>
 															</div>
 														</td>
@@ -212,10 +286,10 @@
 														<td>Gender</td>
 														<td>
 															<div class="radio">
-																<label><input type="radio" name="patientGender" value="male" <?php echo $male; ?>>Male</label>
+																<label><input type="radio" name="patientGender" value="male">Male</label>
 															</div>
 															<div class="radio">
-																<label><input type="radio" name="patientGender" value="female" <?php echo $female; ?>>Female</label>
+																<label><input type="radio" name="patientGender" value="female">Female</label>
 															</div>
 														</td>
 													</tr>
@@ -223,15 +297,15 @@
 													
 													<tr>
 														<td>Phone number</td>
-														<td><input type="text" class="form-control" name="patientPhone" value="<?php echo $userRow['patientPhone']; ?>"  /></td>
+														<td><input type="text" class="form-control" name="patientPhone"  /></td>
 													</tr>
 													<tr>
 														<td>Email</td>
-														<td><input type="text" class="form-control" name="patientEmail" value="<?php echo $userRow['patientEmail']; ?>"  /></td>
+														<td><input type="text" class="form-control" name="patientEmail" /></td>
 													</tr>
 													<tr>
 														<td>Address</td>
-														<td><textarea class="form-control" name="patientAddress"  ><?php echo $userRow['patientAddress']; ?></textarea></td>
+														<td><textarea class="form-control" name="patientAddress"  ></textarea></td>
 													</tr>
 													<tr>
 														<td>
@@ -245,7 +319,58 @@
 												
 											</form>
 											<!-- form end -->
-										</div>
+										<script>
+											document.getElementById('update-form').addEventListener('submit', function(event) {
+												event.preventDefault();
+
+												const formData = new FormData(event.target);
+												const data = {
+													firstName: formData.get('patientFirstName'),
+													lastName: formData.get('patientLastName'),
+													email: formData.get('email'),
+													password: formData.get('password'),
+													gender: formData.get('patientGender'),
+													// patientMaritialStatus: formData.get('patientMaritialStatus'),
+													phone: formData.get('patientPhone'),
+													address: formData.get('patientAddress'),
+													dateOfBirth: `${formData.get('year')}-${formData.get('month')}-${formData.get('day')}`
+												};
+
+												function getPatientIdFromSession() {
+													return sessionStorage.getItem('patientId');
+												}
+												const id = getPatientIdFromSession();
+												if (!id) {
+													alert('Patient ID not found in session. Please log in again.');
+													return;
+												}
+
+												fetch('http://localhost:8080/patient/${id}/update', {
+													method: 'PUT',
+													headers: {
+														'Content-Type': 'application/json'
+													},
+													body: JSON.stringify(data)
+												})
+														.then(response => {
+															if (!response.ok) {
+																throw new Error('Network response was not ok');
+															}
+															return response.json();
+														})
+														.then(data => {
+															console.log('Success:', data);
+															alert('Account updated successfully!');
+															window.location.href = "patient/patient2.html";
+														})
+														.catch(error => {
+															console.error('Error:', error);
+															alert('There was a problem with updating. Please try again.');
+														});
+											});
+										</script>
+
+									</div>
 										
 									</div>
 								</div>
@@ -262,10 +387,43 @@
 			<script src="assets/js/jquery.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
 			
-			<script type="text/javascript">
-														$(function () {
-														$('#patientDOB').datetimepicker();
-														});
-														</script>
+<!--			<script type="text/javascript">-->
+<!--														$(function () {-->
+<!--														$('#patientDOB').datetimepicker();-->
+<!--														});-->
+<!--														</script>-->
 		</body>
 	</html>
+
+<script>
+	$(document).ready(function() {
+		const id = getPatientIdFromSession();
+
+		console.log(id, 'id')
+		if (id) {
+			$.ajax({
+				url: `http://localhost:8080/patient/${id}`,
+				type: 'GET',
+				success: function(patient) {
+					document.getElementById('userFirstName').innerText = patient.firstName;
+					document.getElementById('userFullName').innerText = patient.firstName + " " + patient.lastName;
+					document.getElementById('patientMaritialStatus').innerText = patient.patientMaritialStatus;
+					document.getElementById('patientAddress').innerText = patient.address;
+					document.getElementById('patientEmail').innerText = patient.email;
+					document.getElementById('patientPhone').innerText = patient.patientPhone;
+					document.getElementById('dob').innerText = patient.dateOfBirth;
+					document.getElementById('gender').innerText = patient.gender;
+				},
+				error: function(err) {
+					console.error('Error fetching patient data:', err);
+				}
+			});
+		} else {
+			document.getElementById('user-first-name').innerText = "Error happened";
+		}
+	});
+
+	function getPatientIdFromSession() {
+		return sessionStorage.getItem('patientId');
+	}
+</script>

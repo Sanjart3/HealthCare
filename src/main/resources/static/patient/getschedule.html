@@ -1,99 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <?php
-        if (mysqli_num_rows($res)==0) {
-        echo "<div class='alert alert-danger' role='alert'>Doctor is not available at the moment. Please try again later.</div>";
-        
-        } else {
-        echo "   <table class='table table-hover'>";
-            echo " <thead>";
-                echo " <tr>";
-                    echo " <th>App Id</th>";
-                    echo " <th>Doctor Name</th>";
-                    echo " <th>Day</th>";
-                    echo " <th>Date</th>";
-                    echo "  <th>Start Time</th>";
-                    echo "  <th>End Time</th>";
-                    echo "  <th>Price</th>";
-                    echo " <th>Availability</th>";
-                    echo "  <th>Book Now!</th>";
-                echo " </tr>";
-            echo "  </thead>";
-            echo "  <tbody>";
-                while($row = mysqli_fetch_array($res)) {
-                ?>
-                <tr>
-                    <?php
-                    // $avail=null;
-                    // $btnclick="";
-                    if ($row['bookAvail']!='available') {
-                    $avail="danger";
-                    $btnstate="disabled";
-                    $btnclick="danger";
-                    } else {
-                    $avail="primary";
-                    $btnstate="";
-                    $btnclick="primary";
-                    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div id="alert" class="alert alert-danger" role="alert" style="display: none;">
+    Doctor is not available at the moment. Please try again later.
+</div>
+<table class="table table-hover" id="scheduleTable" style="display: none;">
+    <thead>
+    <tr>
+        <th>App Id</th>
+        <th>Doctor Name</th>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Price</th>
+        <th>Availability</th>
+        <th>Book Now!</th>
+    </tr>
+    </thead>
+    <tbody id="scheduleBody">
+    </tbody>
+</table>
 
-                   
-                    // if ($rowapp['bookAvail']!="available") {
-                    // $btnstate="disabled";
-                    // } else {
-                    // $btnstate="";
-                    // }
-                    echo "<td>" . $row['scheduleId'] . "</td>";
-                    echo "<td>" . $row['doctorFirstName']." ".$row['doctorLastName'] . "</td>";
-                    echo "<td>" . $row['scheduleDay'] . "</td>";
-                    echo "<td>" . $row['scheduleDate'] . "</td>";
-                    echo "<td>" . $row['startTime'] . "</td>";
-                    echo "<td>" . $row['endTime'] . "</td>";
-                    echo "<td>" . $row['booking_price'] . "</td>";
-                    echo "<td> <span class='label label-".$avail."'>". $row['bookAvail'] ."</span></td>";
-                    if($usersession['patient_balance'] < $row['booking_price']){
-                        echo "<td><a href='#' class='btn btn-".$btnclick." btn-xs' role='button' ".$btnstate." onclick='return alert(\"You dont have enough balance\")'>Book Now</a></td>";
-                    } else {
-                        echo "<td><a href='appointment.php?&appid=" . $row['scheduleId'] . "&scheduleDate=".$q."' class='btn btn-".$btnclick." btn-xs' role='button' ".$btnstate." onclick='return confirmBooking()'>Book Now</a></td>";
-                        $usersession['patient_balance'] -= $row['booking_price'];
-                        $row['doctor_balance'] += $row['booking_price'];
-                    }
-                    ?>
-                    
-                    </script>
-                    <!-- ?> -->
-                </tr>
-                
-                <?php
+<script>
+    $(document).ready(function() {
+        const dateInput = sessionStorage.getItem('date');
+        fetchSchedule(dateInput);
+    });
+
+    function fetchSchedule(dateInput) {
+        $.ajax({
+            url: `http://localhost:8080/appointment/data`,
+            type: 'GET',
+            data: { dateInput: dateInput },
+            success: function(schedule) {
+                const scheduleBody = $('#scheduleBody');
+                const alert = $('#alert');
+                const table = $('#scheduleTable');
+
+                // Clear existing rows
+                scheduleBody.empty();
+
+                if (schedule.length === 0) {
+                    alert.show();
+                    table.hide();
+                } else {
+                    alert.hide();
+                    table.show();
+
+                    schedule.forEach(item => {
+                        const availText = item.bookAvail === 'available' ? 'Available' : 'Not Available';
+                        const availClass = item.bookAvail === 'available' ? 'primary' : 'danger';
+                        const btnState = item.bookAvail === 'available' ? '' : 'disabled';
+                        const btnClick = item.bookAvail === 'available' ? 'primary' : 'danger';
+
+                        const row = `
+                            <tr>
+                                <td>${item.scheduleId}</td>
+                                <td>${item.doctorFirstName} ${item.doctorLastName}</td>
+                                <td>${item.scheduleDay}</td>
+                                <td>${item.scheduleDate}</td>
+                                <td>${item.startTime}</td>
+                                <td>${item.endTime}</td>
+                                <td>${item.booking_price}</td>
+                                <td><span class="label label-${availClass}">${availText}</span></td>
+                                <td>
+                                    <a href="#" class="btn btn-${btnClick} btn-xs" role="button" ${btnState}
+                                       onclick="confirmBooking()">
+                                       Book Now
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                        scheduleBody.append(row);
+                    });
                 }
-                }
-                ?>
-            </tbody>
-            <!-- modal start -->
-            
-            
-            
-            
-            
-        </body>
-        <!-- <script>
-            function confirmBooking() {
-                alert('Are you sure you want to book this?');
+            },
+            error: function(error) {
+                console.error('Error fetching schedule:', error);
             }
-        </script> -->
-    </html>
-            
-            
-            
-            
-            
-        </body>
-        <script>
-            function confirmBooking() {
-                alert('Are you sure you want to book this?');
-            }
-        </script>
-    </html>
+        });
+    }
+
+    function confirmBooking() {
+        return confirm('Are you sure you want to book this?');
+    }
+</script>
+</body>
+</html>
